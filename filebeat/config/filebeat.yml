@@ -1,0 +1,7 @@
+inputs:
+- type: container
+  paths:
+    - '/var/lib/docker/containers/*/*.log'
+
+output.logstash:
+    hosts: ["localhost:5044"]
