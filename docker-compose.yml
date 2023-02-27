@@ -93,6 +93,28 @@ services:
     depends_on:
       - app
 
+  auditbeat:
+    build:
+      context: auditbeat/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    entrypoint: "auditbeat -e -strict.perms=false"
+    user: root
+    volumes:
+      - type: bind
+        source: ./auditbeat/config/auditbeat.yml
+        target: /usr/share/auditbeat/auditbeat.yml
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+        read_only: true
+      - type: bind
+        source: /var/lib/docker/containers/
+        target: /var/lib/docker/containers/
+        read_only: true
+    depends_on:
+      - app
+
 volumes:
   setup:
   elasticsearch:

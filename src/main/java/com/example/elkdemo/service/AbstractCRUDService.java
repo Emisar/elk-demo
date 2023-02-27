@@ -1,38 +1,43 @@
 package com.example.elkdemo.service;
 
-import com.example.elkdemo.entity.AbstractIdentifiableObject;
-import com.example.elkdemo.repository.CRUDRepository;
-import lombok.RequiredArgsConstructor;
+import com.example.elkdemo.entity.*;
+import lombok.*;
+import org.springframework.data.jpa.repository.*;
 
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
-public class AbstractCRUDService<T extends AbstractIdentifiableObject> implements CRUDService<T> {
+public abstract class AbstractCRUDService<T extends AbstractIdentifiable> implements CRUDService<T> {
 
-    protected final CRUDRepository<T> repository;
+    protected final JpaRepository<T, Long> repository;
 
     @Override
     public T create(T obj) {
-        return repository.create(obj);
+        return repository.save(obj);
     }
 
     @Override
     public T read(Long id) {
-        return repository.read(id);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public List<T> readAll() {
-        return repository.readAll();
+        return repository.findAll();
     }
 
     @Override
     public T update(Long id, T obj) {
-        return repository.update(id, obj);
+        T dbObject = repository.findById(id).orElse(obj);
+        objectUpdater(obj, dbObject);
+        return repository.save(dbObject);
     }
 
+    protected abstract void objectUpdater(T dataObject, T updatedObject);
+
     @Override
-    public T delete(Long id) {
-        return repository.delete(id);
+    public boolean delete(Long id) {
+        repository.deleteById(id);
+        return repository.findById(id).isPresent();
     }
 }

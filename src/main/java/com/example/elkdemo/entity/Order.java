@@ -1,16 +1,22 @@
 package com.example.elkdemo.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
-@Data
-@SuperBuilder
+@Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
-public class Order extends AbstractIdentifiableObject {
+@Table(name = "order_table")
+public class Order extends AbstractIdentifiable {
 
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
 }

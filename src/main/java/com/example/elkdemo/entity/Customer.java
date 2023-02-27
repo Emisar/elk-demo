@@ -1,15 +1,15 @@
 package com.example.elkdemo.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
-@Data
-@SuperBuilder
+@Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
-public class Customer extends AbstractIdentifiableObject {
+public class Customer extends AbstractIdentifiable {
 
     private String name;
     private String address;

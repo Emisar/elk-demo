@@ -17,8 +17,19 @@
         </rollingPolicy>
     </appender>
 
+    <appender name="auditbeatAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>./log/audit-application.log</file>
+        <append>true</append>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>./log/audit-application.%d.%i.log.gz</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+        </rollingPolicy>
+    </appender>
+
     <root level="INFO">
         <appender-ref ref="consoleAppender" />
         <appender-ref ref="filebeatAppender" />
+        <appender-ref ref="auditbeatAppender" />
     </root>
 </configuration>

@@ -1,6 +1,6 @@
 package com.example.elkdemo.controller;
 
-import com.example.elkdemo.entity.Product;
+import com.example.elkdemo.entity.*;
 import com.example.elkdemo.service.impl.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,31 +21,31 @@ public class ProductController {
 
     @PostMapping("/add")
     public boolean addProduct(@RequestBody Product product) {
-        log.info(CALLING_METHOD, "create");
+        log.info(CALLING_METHOD, "create", Product.class);
         return Objects.nonNull(productService.create(product));
     }
 
     @GetMapping("/get")
     public Product getProduct(@RequestParam Long id) {
-        log.info(CALLING_METHOD, "read");
+        log.info(CALLING_METHOD, "read", Product.class);
         return productService.read(id);
     }
 
     @GetMapping("/getAll")
     public List<Product> getAllProducts() {
-        log.info(CALLING_METHOD, "readAll");
+        log.info(CALLING_METHOD, "readAll", Product.class);
         return productService.readAll();
     }
 
     @PatchMapping("/update")
     public boolean updateProduct(@RequestParam Long id, @RequestBody Product product) {
-        log.info(CALLING_METHOD, "update");
+        log.info(CALLING_METHOD, "update", Product.class);
         return Objects.nonNull(productService.update(id, product));
     }
 
     @DeleteMapping("/delete")
     public boolean deleteProduct(@RequestParam Long id) {
-        log.info(CALLING_METHOD, "delete");
-        return Objects.nonNull(productService.delete(id));
+        log.info(CALLING_METHOD, "delete", Product.class);
+        return productService.delete(id);
     }
 }

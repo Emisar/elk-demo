@@ -1,10 +1,10 @@
 package com.example.elkdemo.service;
 
-import com.example.elkdemo.entity.AbstractIdentifiableObject;
+import com.example.elkdemo.entity.*;
 
 import java.util.List;
 
-public interface CRUDService<T extends AbstractIdentifiableObject> {
+public interface CRUDService<T extends AbstractIdentifiable> {
 
     T create(T obj);
 
@@ -14,5 +14,5 @@ public interface CRUDService<T extends AbstractIdentifiableObject> {
 
     T update(Long id, T obj);
 
-    T delete(Long id);
+    boolean delete(Long id);
 }
