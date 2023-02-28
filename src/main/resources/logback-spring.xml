@@ -1,35 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+    <property name="LOG_PATTERN" value="%d [%thread] %-5level  %logger{35} - [%mdc] - %msg%n"/>
+    <property name="LOG_ROOT" value="./log"/>
+
     <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d [%thread] %-5level  %logger{35} - [%mdc] - %msg%n</pattern>
+            <pattern>${LOG_PATTERN}</pattern>
         </encoder>
     </appender>
 
     <appender name="filebeatAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>./log/application.log</file>
+        <file>${LOG_ROOT}/application.log</file>
         <append>true</append>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>./log/application.%d.%i.log.gz</fileNamePattern>
+            <fileNamePattern>${LOG_ROOT}/application.%d.%i.log.gz</fileNamePattern>
             <maxFileSize>10MB</maxFileSize>
         </rollingPolicy>
     </appender>
 
     <appender name="auditbeatAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>./log/audit-application.log</file>
+        <file>${LOG_ROOT}/audit-application.log</file>
         <append>true</append>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>./log/audit-application.%d.%i.log.gz</fileNamePattern>
+            <fileNamePattern>${LOG_ROOT}/audit-application.%d.%i.log.gz</fileNamePattern>
             <maxFileSize>10MB</maxFileSize>
         </rollingPolicy>
     </appender>
 
+    <logger name="com.example.elkdemo" level="INFO" additivity="false">
+        <appender-ref ref="filebeatAppender" />
+    </logger>
+
+    <logger name="com.example.elkdemo.audit" level="INFO" additivity="false">
+        <appender-ref ref="auditbeatAppender" />
+    </logger>
+
     <root level="INFO">
         <appender-ref ref="consoleAppender" />
-        <appender-ref ref="filebeatAppender" />
-        <appender-ref ref="auditbeatAppender" />
     </root>
 </configuration>

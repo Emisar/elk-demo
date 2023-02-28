@@ -1,15 +1,6 @@
 version: '0.0.1'
 
 services:
-  app:
-    build: .
-    volumes:
-      - type: bind
-        source: ./log/
-        target: /usr/share/server-app/logs
-    ports:
-      - 8080:8080
-
   elasticsearch:
     build:
       context: elasticsearch/
@@ -71,51 +62,6 @@ services:
     depends_on:
       - elasticsearch
 
-  filebeat:
-    build:
-      context: filebeat/
-      args:
-        ELK_VERSION: $ELK_VERSION
-    entrypoint: "filebeat -e -strict.perms=false"
-    user: root
-    volumes:
-      - type: bind
-        source: ./filebeat/config/filebeat.yml
-        target: /usr/share/filebeat/filebeat.yml
-      - type: bind
-        source: /var/run/docker.sock
-        target: /var/run/docker.sock
-        read_only: true
-      - type: bind
-        source: /var/lib/docker/containers/
-        target: /var/lib/docker/containers/
-        read_only: true
-    depends_on:
-      - app
-
-  auditbeat:
-    build:
-      context: auditbeat/
-      args:
-        ELK_VERSION: $ELK_VERSION
-    entrypoint: "auditbeat -e -strict.perms=false"
-    user: root
-    volumes:
-      - type: bind
-        source: ./auditbeat/config/auditbeat.yml
-        target: /usr/share/auditbeat/auditbeat.yml
-      - type: bind
-        source: /var/run/docker.sock
-        target: /var/run/docker.sock
-        read_only: true
-      - type: bind
-        source: /var/lib/docker/containers/
-        target: /var/lib/docker/containers/
-        read_only: true
-    depends_on:
-      - app
-
 volumes:
   setup:
   elasticsearch:
-  server-app:
